@@ -21,3 +21,4 @@ def gen_user(num):
         i = fake.email()
         emails.append(i)
     return render_template("table.html", data=emails)
+
