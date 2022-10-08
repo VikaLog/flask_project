@@ -2,6 +2,7 @@ from flask import Flask, render_template, json
 from faker import Faker
 import pandas as pd
 import numpy as np
+import requests
 
 fake = Faker()
 
@@ -27,6 +28,13 @@ def gen_user(num):
 @app.route('/mean/', methods=['GET'])
 def avg_metrics():
     df = pd.read_csv("hw.csv", sep=',')
-    avg_height = round(np.mean(df[' "Height(Inches)"'])*2.54, 2)
+    avg_height = round(np.mean(df[' "Height(Inches)"']) * 2.54, 2)
     avg_weight = round(np.mean(df[' "Weight(Pounds)"']) * 0.45, 2)
     return f"avg_height = {avg_height} cm, avg_weight = {avg_weight} kg"
+
+
+@app.route('/space/', methods=['GET'])
+def space():
+    r = requests.get('http://api.open-notify.org/astros.json')
+    a = str(r.json()["number"])
+    return f"The current number of astronauts is {a}."
