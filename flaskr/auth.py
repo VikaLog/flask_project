@@ -11,73 +11,49 @@ bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
 
-@bp.route('/register', methods=('GET', 'POST'))
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        db = get_db()
-        error = None
 
-        if not username:
-            error = 'Username is required.'
-        elif not password:
-            error = 'Password is required.'
-
-        if error is None:
-            try:
-                db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
-                )
-                db.commit()
-            except db.IntegrityError:
-                error = f"User {username} is already registered."
-            else:
-                return redirect(url_for("auth.login"))
-
-        flash(error)
-
-    return render_template('auth/register.html')
-
-
-@bp.route('/names/', methods=('GET', 'POST'))
+@bp.route('/names/', methods=('GET'))
 def names():
     db = get_db()
-    db.execute(
+    names_artists = db.execute(
         'SELECT count(distinct artist) FROM tracks'
     )
+    return names_artists
 
 
 
-@bp.route('/tracks/', methods=('GET', 'POST'))
+@bp.route('/tracks/', methods=('GET'))
 def tracks():
     db = get_db()
     tracks_count = db.execute(
         'SELECT count(*) FROM tracks'
     )
+    return tracks_count
 
 
 
-@bp.route('/tracks/<genre>', methods=('GET', 'POST'))
+@bp.route('/tracks/<genre>', methods=('GET'))
 def genre():
     db = get_db()
     genre_count = db.execute(
         'SELECT count(*) FROM tracks as t inner join genres as g on t.genre_id = g.id where g.title = <genre>'
     )
+    return genre_count
 
 
-@bp.route('/tracks-sec/', methods=('GET', 'POST'))
+@bp.route('/tracks-sec/', methods=('GET'))
 def tracks_sec():
     db = get_db()
     track_sec = db.execute(
         'SELECT title, "lenght" FROM tracks'
     )
+    return track_sec
 
 
-@bp.route('/tracks-sec/statistics/', methods=('GET', 'POST'))
+@bp.route('/tracks-sec/statistics/', methods=('GET'))
 def tracks_sec_stat():
     db = get_db()
     track_sec = db.execute(
         'SELECT avg("lenght"), sum("lenght") FROM tracks'
     )
+    return track_sec
