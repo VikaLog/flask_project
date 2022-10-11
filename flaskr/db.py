@@ -44,7 +44,7 @@ def init_db_command():
 
 
 @click.command('fill-db')
-def init_db_command():
+def fill_db_command():
     """Clear the existing data and create new tables."""
     fill_db()
     click.echo('Filled the database.')
@@ -53,4 +53,4 @@ def init_db_command():
 def init_app(app):
     app.teardown_appcontext(close_db)
     app.cli.add_command(init_db_command)
-    app.cli.add_command(init_db_command)
+    app.cli.add_command(fill_db_command)

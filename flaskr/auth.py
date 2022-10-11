@@ -10,7 +10,7 @@ from flaskr.db import get_db
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-@bp.route('/names/', methods=('GET'))
+@bp.route('/names/', methods=('GET', 'POST'))
 def names():
     db = get_db()
     names_artists = db.execute(
@@ -19,7 +19,7 @@ def names():
     return names_artists
 
 
-@bp.route('/tracks/', methods=('GET'))
+@bp.route('/tracks/', methods=('GET', 'POST'))
 def tracks():
     db = get_db()
     tracks_count = db.execute(
@@ -28,16 +28,16 @@ def tracks():
     return tracks_count
 
 
-@bp.route('/tracks/<genre>', methods=('GET'))
+@bp.route('/tracks/<genre>', methods=('GET', 'POST'))
 def genre():
-    db = get_db()
+    db = get_db(genre)
     genre_count = db.execute(
-        'SELECT count(*) FROM tracks as t inner join genres as g on t.genre_id = g.id where g.title = <genre>'
+        'SELECT count(*) as tracks FROM tracks as t inner join genres as g on t.genre_id = g.id where g.title = genre'
     )
     return genre_count
 
 
-@bp.route('/tracks-sec/', methods=('GET'))
+@bp.route('/tracks-sec/', methods=('GET', 'POST'))
 def tracks_sec():
     db = get_db()
     track_sec = db.execute(
@@ -46,7 +46,7 @@ def tracks_sec():
     return track_sec
 
 
-@bp.route('/tracks-sec/statistics/', methods=('GET'))
+@bp.route('/tracks-sec/statistics/', methods=('GET', 'POST'))
 def tracks_sec_stat():
     db = get_db()
     track_sec_st = db.execute(
