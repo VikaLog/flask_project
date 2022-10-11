@@ -10,8 +10,6 @@ from flaskr.db import get_db
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
-
-
 @bp.route('/names/', methods=('GET'))
 def names():
     db = get_db()
@@ -21,7 +19,6 @@ def names():
     return names_artists
 
 
-
 @bp.route('/tracks/', methods=('GET'))
 def tracks():
     db = get_db()
@@ -29,7 +26,6 @@ def tracks():
         'SELECT count(*) FROM tracks'
     )
     return tracks_count
-
 
 
 @bp.route('/tracks/<genre>', methods=('GET'))
@@ -53,7 +49,7 @@ def tracks_sec():
 @bp.route('/tracks-sec/statistics/', methods=('GET'))
 def tracks_sec_stat():
     db = get_db()
-    track_sec = db.execute(
+    track_sec_st = db.execute(
         'SELECT avg("lenght"), sum("lenght") FROM tracks'
     )
-    return track_sec
+    return track_sec_st
