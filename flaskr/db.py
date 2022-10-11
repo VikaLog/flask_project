@@ -35,6 +35,7 @@ def fill_db():
     with current_app.open_resource('data.sql') as f:
         db.executescript(f.read().decode('utf8'))
 
+
 @click.command('init-db')
 def init_db_command():
     """Clear the existing data and create new tables."""
@@ -47,6 +48,7 @@ def init_db_command():
     """Clear the existing data and create new tables."""
     fill_db()
     click.echo('Filled the database.')
+
 
 def init_app(app):
     app.teardown_appcontext(close_db)
