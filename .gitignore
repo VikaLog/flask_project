@@ -130,4 +130,7 @@ dmypy.json
 
 .venv/
 .idea/
+.ipynb_checkpoints/
 
+
+test.py
