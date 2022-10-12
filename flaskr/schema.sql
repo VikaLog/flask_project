@@ -6,7 +6,7 @@ CREATE TABLE tracks (
   title TEXT NOT NULL,
   artist TEXT NOT NULL,
   genre_id INTEGER NOT NULL,
-  length INTEGER NOT NULL,
+  lengthen INTEGER NOT NULL,
   FOREIGN KEY (genre_id) REFERENCES genres (id)
 );
 

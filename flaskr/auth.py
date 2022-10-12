@@ -15,8 +15,8 @@ def names():
     db = get_db()
     names_artists = db.execute(
         'SELECT count(distinct artist) FROM tracks'
-    )
-    return names_artists
+    ).fetchall()
+    return render_template("base.html", data=names_artists)
 
 
 @bp.route('/tracks/', methods=('GET', 'POST'))
@@ -24,32 +24,33 @@ def tracks():
     db = get_db()
     tracks_count = db.execute(
         'SELECT count(*) FROM tracks'
-    )
-    return tracks_count
+    ).fetchall()
+    return render_template("base.html", data=tracks_count)
 
 
 @bp.route('/tracks/<genre>', methods=('GET', 'POST'))
-def genre():
-    db = get_db(genre)
+def genre(genre):
+    db = get_db()
     genre_count = db.execute(
-        'SELECT count(*) as tracks FROM tracks as t inner join genres as g on t.genre_id = g.id where g.title = genre'
-    )
-    return genre_count
+        'SELECT count(*) as tracks FROM tracks as t inner join genres as g on t.genre_id = g.id where g.title = ?',
+        (genre,)
+    ).fetchall()
+    return render_template("base.html", data=genre_count)
 
 
 @bp.route('/tracks-sec/', methods=('GET', 'POST'))
 def tracks_sec():
     db = get_db()
     track_sec = db.execute(
-        'SELECT title, "lenght" FROM tracks'
-    )
-    return track_sec
+        'SELECT title, lengthen FROM tracks'
+    ).fetchall()
+    return render_template("base.html", data=track_sec)
 
 
 @bp.route('/tracks-sec/statistics/', methods=('GET', 'POST'))
 def tracks_sec_stat():
     db = get_db()
     track_sec_st = db.execute(
-        'SELECT avg("lenght"), sum("lenght") FROM tracks'
-    )
-    return track_sec_st
+        'SELECT avg(lengthen), sum(lengthen) FROM tracks'
+    ).fetchall()
+    return render_template("base.html", data=track_sec_st)
